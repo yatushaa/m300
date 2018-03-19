@@ -1,42 +1,28 @@
-Multi Machine Beispiel
-----------------------
 
-### Übersicht 
 
-    +---------------------------------------------------------------+
-    ! Notebook - Schulnetz 10.x.x.x und Privates Netz 192.168.55.1  !                 
-    ! Port: 8080 (192.158.55.101:80)                                !	
-    !                                                               !	
-    !    +--------------------+          +---------------------+    !
-    !    ! Web Server         !          ! Datenbank Server    !    !       
-    !    ! Host: web01        !          ! Host: db01          !    !
-    !    ! IP: 192.168.55.101 ! <------> ! IP: 192.168.55.100  !    !
-    !    ! Port: 80           !          ! Port 3306           !    !
-    !    ! Nat: 8080          !          ! Nat: -              !    !
-    !    +--------------------+          +---------------------+    !
-    !                                                               !	
-    +---------------------------------------------------------------+
-	
-### Beschreibung
+FTP
+-----------------------------
 
-* Web Server mit Apache und MySQL UserInterface [Adminer](https://www.adminer.org/)
-* Datenbank Server mit MySQL
+Einfacher FTP mit Ubuntu 16.x.
 
-* Die Verbindung Web - Datenbank erfolgt mittels Internen Netzwerk Adapter.
-* Von Aussen ist nur der HTTP Port auf dem Web Server Erreichbar.
+### Erstellen und konfigurieren einer Gast Maschine
 
-Um in die VM zu wechseln ist zusätzlich der in Vagrantfile definierte Name einzugeben.
+    cd ftp
+    vagrant up
+ 
+Die Dateien werden lokal im aktuellen Verzeichnis abgelegt: 
 
-	vagrant ssh database
-	vagrant ssh web
+	config.vm.synced_folder ".", "devops\vagrant\ftp\.vagrant\machines\ftp"
 
-Das MySQL User Interface ist via [http://localhost:8080/adminer.php](http://localhost:8080/adminer.php) mit User/Password: root/admin erreichbar.
+Description: Vagrant Ubuntu Trusty64 VM mit ftp server installiert. Das User Interface ist via ftp://localhost:2121/ erreichbar
 
-### Tests
+    sudo nano /etc/vsftpd.conf
+Wechseln von anonymous_enable=YES --> anonymous=NO
 
-* keine
+    sudo service vsftpd restart
 
-### Sicherheit
+    username= anonymous
+    passwort=
 
-* Datenbank Server bzw. MySQL ist mit Password geschützt.
-* Der Web Server ist offen und mittels ungeschütztem HTTP Protokoll erreichbar.
+Dannach sollte Login successful
+
